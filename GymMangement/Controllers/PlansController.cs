@@ -21,14 +21,20 @@ namespace GymMangement.Controllers
             var Plans = await dbContext.Plans.ToListAsync();
             return View(Plans);
         }
-    
-    
-    
-    
-    
+
         // Details Action
         // GET/BaseURL/Plans/Details/1
     
+        public async Task<IActionResult> Details(int id )
+        {
+            var Plan = await dbContext.Plans.FindAsync(id);
+            if (Plan == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+                return View(Plan);
+        }
     
     
     }

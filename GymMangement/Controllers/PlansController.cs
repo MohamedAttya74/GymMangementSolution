@@ -8,13 +8,22 @@ namespace GymMangement.Controllers
 {
     public class PlansController : Controller
     {
-        private readonly IPlanRepository planRepository = new PlanRepository(); 
+
+        //private readonly IPlanRepository planRepository= new GymDbContext() ;
+        //private readonly IPlanRepository planRepository=  new PlanRepository() ;
+        private readonly IPlanRepository _planRepository ;
+        public PlansController( IPlanRepository repository)
+        {
+            _planRepository = repository;
+        }
+
+
 
         // Index Action 
         // GET/BaseURL/Plans/Index 
         public async Task<IActionResult> Index( CancellationToken ct)
         {
-            var Plans = await planRepository.GetAllAsync( ct: ct);
+            var Plans = await _planRepository.GetAllAsync( ct: ct);
             return View(Plans);
         }
 
@@ -23,7 +32,7 @@ namespace GymMangement.Controllers
     
         public async Task<IActionResult> Details(int id , CancellationToken ct)
         {
-            var Plan = await planRepository.GetByIdAsync(id ,ct) ;
+            var Plan = await _planRepository.GetByIdAsync(id ,ct) ;
 
             if (Plan == null)
                 return RedirectToAction(nameof(Index));

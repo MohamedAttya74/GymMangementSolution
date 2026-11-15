@@ -12,35 +12,35 @@ namespace GymMangement.DAL.Repositories.Classes
 {
     public class PlanRepository : IPlanRepository
     {
-        private readonly GymDbContext dbContext;
+        private readonly GymDbContext _dbContext;
 
-        public PlanRepository()
+        public PlanRepository(GymDbContext dbContext)
         {
-            dbContext = new GymDbContext();
+            _dbContext =dbContext;
         }
         public async Task<IEnumerable<Plan>> GetAllAsync(bool Tracking = false, CancellationToken ct = default)
         {
-            IQueryable<Plan> Query = Tracking? dbContext.Plans : dbContext.Plans.AsNoTracking();
+            IQueryable<Plan> Query = Tracking? _dbContext.Plans : _dbContext.Plans.AsNoTracking();
             return await Query.ToListAsync(ct);
         }
         public async Task<Plan?> GetByIdAsync(int id, CancellationToken ct = default)
         {
-             return await dbContext.Plans.FindAsync(id, ct);
+             return await _dbContext.Plans.FindAsync(id, ct);
         }
         public async Task<int> AddAsync(Plan plan, CancellationToken ct = default)
         {
-            dbContext.Plans.Add(plan); // Not Need To Use AddAsync 
-            return await dbContext.SaveChangesAsync(ct);
+            _dbContext.Plans.Add(plan); // Not Need To Use AddAsync 
+            return await _dbContext.SaveChangesAsync(ct);
         }
         public async Task<int> UpdateAsync(Plan plan, CancellationToken ct = default)
         {
-           dbContext.Plans.Update(plan);
-            return await dbContext.SaveChangesAsync(ct);
+           _dbContext.Plans.Update(plan);
+            return await _dbContext.SaveChangesAsync(ct);
         }
         public async Task<int> DeleteAsync(Plan plan, CancellationToken ct = default)
         {
-           dbContext.Plans.Remove(plan);
-            return await dbContext.SaveChangesAsync(ct);
+           _dbContext.Plans.Remove(plan);
+            return await _dbContext.SaveChangesAsync(ct);
         }
     }
 }

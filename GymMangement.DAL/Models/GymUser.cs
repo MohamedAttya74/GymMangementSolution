@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace GymMangement.DAL.Models
 {
-    public class GymUser : BaseEntity
+    public abstract class GymUser : BaseEntity
     {
 
         public string Name { get; set; } = default!;
         public string Email { get; set; } = default!;
         public string Phone { get; set; }
         public DateOnly DateOfBirth { get; set; }
-
         public Gender Gender { get; set; }
         public Address Address { get; set; }
     }

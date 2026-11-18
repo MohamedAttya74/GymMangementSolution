@@ -13,7 +13,7 @@ namespace GymMangement
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             builder.Services.AddDbContext<GymDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));

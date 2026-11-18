@@ -1,4 +1,4 @@
-﻿using GymMangement.DAL.Models;
+﻿using GymMangement.DAL.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymMangement.DAL.Configurations
+namespace GymMangement.DAL.Data.Configurations
 {
     internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {

@@ -6,10 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymMangement.DAL.Models
+namespace GymMangement.DAL.Data.Models
 {
     public  class Category : BaseEntity
     {
         public  string CategoryName { get; set; }
+
+
+        #region RelationShips
+
+
+        public  ICollection<Session> Sessions { get; set; } = default!;
+
+
+        #endregion
+
+
     }
 }

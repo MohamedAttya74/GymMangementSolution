@@ -1,6 +1,6 @@
-﻿using GymMangement.DAL.Repositories.Interfaces;
-using GymMangement.DbContexts;
-using GymMangement.Models;
+﻿using GymMangement.DAL.Data.DbContexts;
+using GymMangement.DAL.Repositories.Interfaces;
+using GymMangement.DAL.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

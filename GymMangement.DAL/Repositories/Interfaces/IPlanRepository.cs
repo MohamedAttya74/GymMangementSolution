@@ -1,4 +1,4 @@
-﻿using GymMangement.Models;
+﻿using GymMangement.DAL.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

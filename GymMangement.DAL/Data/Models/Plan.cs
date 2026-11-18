@@ -1,6 +1,6 @@
-﻿using GymMangement.DAL.Models;
+﻿using GymMangement.DAL.Data.Models;
 
-namespace GymMangement.Models
+namespace GymMangement.DAL.Data.Models
 {
     public class Plan : BaseEntity
     {
@@ -9,5 +9,14 @@ namespace GymMangement.Models
         public decimal Price { get; set; }
         public int DurationDays { get; set; }
         public bool  IsActive { get; set; }
+
+        #region RelationShips
+        public  ICollection<MemberShip> PlanMembers { get; set; } = default!;
+
+
+
+
+
+        #endregion
     }
 }

@@ -1,6 +1,8 @@
+using GymMangement.BLL.Services.Classes;
 using GymMangement.DAL.Data.DbContexts;
 using GymMangement.DAL.Repositories.Classes;
 using GymMangement.DAL.Repositories.Interfaces;
+using GymMangement.PL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymMangement
@@ -14,6 +16,7 @@ namespace GymMangement
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            builder.Services.AddScoped<IMemberService , MemberService>();
             builder.Services.AddDbContext<GymDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));

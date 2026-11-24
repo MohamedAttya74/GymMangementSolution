@@ -53,12 +53,12 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label asp-for="DateOfBirth" class="form-label">DateOfBirth</label>
-                            <input asp-for="DateOfBirth" class="form-control"  />
+                            <input asp-for="DateOfBirth" class="form-control" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <label  asp-for="Gender"  class="form-label"></label>
-                            <select asp-for="Gender"   class="form-select" asp-items="Html.GetEnumSelectList<Gender>()">
+                            <label asp-for="Gender" class="form-label"></label>
+                            <select asp-for="Gender" class="form-select" asp-items="Html.GetEnumSelectList<Gender>()">
                                 <option value="">-- Select Gender --</option>
                             </select>
                             <span asp-validation-for="Gender" class="text-danger"></span>
@@ -72,13 +72,13 @@
 
                         <div class="col-12 col-md-6">
                             <label asp-for="BuildingNumber" class="form-label"></label>
-                            <input asp-for="BuildingNumber"  class="form-control" />
+                            <input asp-for="BuildingNumber" class="form-control" />
                             <span asp-validation-for="BuildingNumber" class="text-danger"></span>
                         </div>
 
                         <div class="col-12 col-md-6">
                             <label asp-for="Street" class="form-label"></label>
-                            <input asp-for="Street"  class="form-control" />
+                            <input asp-for="Street" class="form-control" />
                             <span asp-validation-for="Street" class="text-danger"></span>
                         </div>
                         <div class="col-12 col-md-6">
@@ -94,7 +94,7 @@
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <label asp-for="HealthRecordViewModel.Height" class="form-label"></label>
-                            <input asp-for="HealthRecordViewModel.Height"  class="form-control" />
+                            <input asp-for="HealthRecordViewModel.Height" class="form-control" />
                             <span asp-validation-for="HealthRecordViewModel.Height" class="text-danger"></span>
                         </div>
 
@@ -146,9 +146,9 @@
 @section ValidationScripts {
     
     <partial name="_ValidationScriptsPartial">
-}
+    }
 
-@* <script>
+    @* <script>
     // Preview photo before upload
     document.getElementById('photoInput').addEventListener('change', function (e) {
         var file = e.target.files[0];

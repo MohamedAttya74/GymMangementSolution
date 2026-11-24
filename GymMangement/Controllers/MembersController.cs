@@ -10,16 +10,13 @@ namespace GymMangement.PL.Controllers
     {
         private readonly IMemberService _memberService;
 
-        // GET//BaseURL/Members/Index
-        // Index - List all members
-
         public MembersController(IMemberService memberService)
         {
             _memberService = memberService;
         }
 
-
-
+        // GET//BaseURL/Members/Index
+        // Index - List all members
         public async Task<IActionResult> Index( CancellationToken ct)
         {
             var Members = await _memberService.GetAllMembersAsync(ct);
@@ -28,10 +25,28 @@ namespace GymMangement.PL.Controllers
 
         // GET/BaseURL/Members/MemberDetails/{id}
         // MemberDetails - Show one member's details 
+        public async Task<IActionResult> MemberDetails(int id, CancellationToken ct)
+        {
+             var member = await _memberService.GetMemberDetailsByIdAsync(id, ct);
 
+            if (member == null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(member);
+
+        }
 
         // GET/BaseURL/Members/HealthRecordDetails/{id}
         // HealthRecordDetails - Shows health record member's details
+        //public IActionResult HealthRecordDetails(int id, CancellationToken ct)
+        //{
+        //    // Get Health Record by id
+        //    // Check if Health Record is null => Return Index with error message
+        //    // If Health Record is not null => Return HealthRecordDetails view with health record details
+        //}
+
 
 
         #region Create Member 
@@ -40,8 +55,6 @@ namespace GymMangement.PL.Controllers
         // Create -  Show empty form
         [HttpGet]
         public IActionResult Create() =>  View();
-
-
 
         // POST/BaseURL/Members/CreateMember {Member}
         // CreateMember -  submitted form

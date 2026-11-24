@@ -14,10 +14,16 @@ namespace GymMangement.BLL.Services.Classes
     public class MemberService : IMemberService
     {
         private readonly IGenericRepository<Member> memberRepository;
+        private readonly IGenericRepository<MemberShip> memberShipRepository;
+        private readonly IGenericRepository<Plan> planRepository;
 
-        public MemberService(IGenericRepository<Member> memberRepository)
+        public MemberService(IGenericRepository<Member> memberRepository 
+            , IGenericRepository<MemberShip> memberShipRepository ,
+            IGenericRepository<Plan> planRepository)
         {
             this.memberRepository = memberRepository;
+            this.memberShipRepository = memberShipRepository;
+            this.planRepository = planRepository;
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct = default)
@@ -60,6 +66,42 @@ namespace GymMangement.BLL.Services.Classes
 
             var Result = await memberRepository.AddAsync(member);
             return Result > 0;
+        }
+
+        public async Task<MemberViewModel?> GetMemberDetailsByIdAsync(int MemberId, CancellationToken ct = default)
+        {
+            var member = await memberRepository.GetByIdAsync(MemberId, ct);
+            if (member == null) return null;
+
+            var model = new MemberViewModel()
+            {
+                Name =member.Name,
+                Phone = member.Phone,
+                DateOfBirth = member.DateOfBirth.ToShortDateString(),
+                Gender = member.Gender.ToString(),
+                Address = $"{member.Address.City} , {member.Address.street} , {member.Address.BuildingNumber}",
+            };
+
+
+           
+            var ActiveMembership = await memberShipRepository.FirstOrDefaultAsync(x=>x.MemberId == MemberId && x.EndDate > DateTime.Now);
+
+            if (ActiveMembership is not null)
+            {
+
+                var ActivePlan = await planRepository.GetByIdAsync(ActiveMembership.PlanId, ct);
+                model.PlanName= ActivePlan?.Name;
+
+                model.MembershipStartDate = ActiveMembership.CreatedAt.ToString();
+                model.MembershipEndDate = ActiveMembership.EndDate.ToString();
+
+
+
+            }
+
+
+            return model;
+
         }
 
         async Task<IEnumerable<MemberViewModel>> IMemberService.GetAllMembersAsync(CancellationToken ct)

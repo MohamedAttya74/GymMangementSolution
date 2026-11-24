@@ -12,15 +12,12 @@ namespace GymMangement.DAL.Data.Models
         public  Member Member { get; set; } = default!;
         public  int  MemberId { get; set; }
 
-
         public Plan Plan { get; set; } = default!;
         public int PlanId { get; set; }
 
 
         //public DateTime StartDate { get; set; } // StartDate = CreatedAt of BaseEntity
         public DateTime EndDate { get; set; }
-
-
         public  string Status => EndDate > DateTime.Now ? "Active" : "Expired";
         public  bool  IsActive => EndDate > DateTime.Now;
     }

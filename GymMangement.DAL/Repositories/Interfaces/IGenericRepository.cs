@@ -19,3 +19,4 @@ namespace GymMangement.DAL.Repositories.Interfaces
         Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool Tracting = false, CancellationToken ct = default);
     }
 }
+// new() : Must have a public parameterless constructor . 

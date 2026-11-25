@@ -16,14 +16,17 @@ namespace GymMangement.BLL.Services.Classes
         private readonly IGenericRepository<Member> memberRepository;
         private readonly IGenericRepository<MemberShip> memberShipRepository;
         private readonly IGenericRepository<Plan> planRepository;
+        private readonly IGenericRepository<HealthRecord> healthRecordRepository;
 
         public MemberService(IGenericRepository<Member> memberRepository 
             , IGenericRepository<MemberShip> memberShipRepository ,
-            IGenericRepository<Plan> planRepository)
+            IGenericRepository<Plan> planRepository,
+            IGenericRepository<HealthRecord> healthRecordRepository)
         {
             this.memberRepository = memberRepository;
             this.memberShipRepository = memberShipRepository;
             this.planRepository = planRepository;
+            this.healthRecordRepository = healthRecordRepository;
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct = default)
@@ -66,6 +69,23 @@ namespace GymMangement.BLL.Services.Classes
 
             var Result = await memberRepository.AddAsync(member);
             return Result > 0;
+        }
+
+        public async Task<HealthRecordViewModel?> GetMemberHealthRecordAsync(int MemberId, CancellationToken ct = default)
+        {
+            var record = await healthRecordRepository.FirstOrDefaultAsync(x => x.MemberId == MemberId, ct: ct);
+
+            if (record == null) return null;
+            else
+                return new HealthRecordViewModel()
+                {
+                    Height = record.Height,
+                    Weight = record.Weight,
+                    BloodType = record.BloodType,
+                    Note = record.Note
+                };
+
+
         }
 
         public async Task<MemberViewModel?> GetMemberDetailsByIdAsync(int MemberId, CancellationToken ct = default)

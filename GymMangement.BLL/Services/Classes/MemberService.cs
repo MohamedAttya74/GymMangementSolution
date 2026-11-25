@@ -17,16 +17,18 @@ namespace GymMangement.BLL.Services.Classes
         private readonly IGenericRepository<MemberShip> memberShipRepository;
         private readonly IGenericRepository<Plan> planRepository;
         private readonly IGenericRepository<HealthRecord> healthRecordRepository;
+        private readonly IGenericRepository<Booking> bookingRepository;
 
         public MemberService(IGenericRepository<Member> memberRepository
             , IGenericRepository<MemberShip> memberShipRepository,
             IGenericRepository<Plan> planRepository,
-            IGenericRepository<HealthRecord> healthRecordRepository)
+            IGenericRepository<HealthRecord> healthRecordRepository , IGenericRepository<Booking> bookingRepository)
         {
             this.memberRepository = memberRepository;
             this.memberShipRepository = memberShipRepository;
             this.planRepository = planRepository;
             this.healthRecordRepository = healthRecordRepository;
+            this.bookingRepository = bookingRepository;
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct = default)
@@ -181,6 +183,21 @@ namespace GymMangement.BLL.Services.Classes
             var Result = await memberRepository.UpdateAsync(member);
             return Result > 0;
 
+
+
+
+        }
+
+        public async Task<bool> RemoveMemberAsync(int memberId, CancellationToken ct)
+        {
+            var member = await memberRepository.GetByIdAsync(memberId, ct);
+            if (member == null) return false;
+                                                                                                // Problem In future We Will Handel : أن شاء الله 
+            var HasFutureSession = await bookingRepository.AnyAsync(b => b.MemberId == memberId && b.Session.StartDate > DateTime.Now ,ct);
+            if (HasFutureSession) return false;
+
+           var Result =  await memberRepository.DeleteAsync(member,ct );
+            return Result > 0;
 
 
 

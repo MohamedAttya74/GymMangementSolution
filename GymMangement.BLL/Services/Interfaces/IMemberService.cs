@@ -11,5 +11,8 @@ namespace GymMangement.PL.Services.Interfaces
         Task<HealthRecordViewModel?> GetMemberHealthRecordAsync(int MemberId, CancellationToken ct = default);
         Task<MemberToUpdateViewModel?> GetMemberToUpdateByIdAsync(int MemberId, CancellationToken ct = default);
         Task<bool> UpdateMemberDetailsAsync(int Id, MemberToUpdateViewModel model ,CancellationToken ct = default);
+        Task<bool> RemoveMemberAsync(int memberId, CancellationToken ct =  default);
+
+
     }
 }

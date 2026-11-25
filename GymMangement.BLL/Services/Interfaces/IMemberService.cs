@@ -9,5 +9,7 @@ namespace GymMangement.PL.Services.Interfaces
         Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct = default);
         Task<MemberViewModel?> GetMemberDetailsByIdAsync(int MemberId, CancellationToken ct = default);
         Task<HealthRecordViewModel?> GetMemberHealthRecordAsync(int MemberId, CancellationToken ct = default);
+        Task<MemberToUpdateViewModel?> GetMemberToUpdateByIdAsync(int MemberId, CancellationToken ct = default);
+        Task<bool> UpdateMemberDetailsAsync(int Id, MemberToUpdateViewModel model ,CancellationToken ct = default);
     }
 }

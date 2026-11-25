@@ -81,10 +81,35 @@ namespace GymMangement.PL.Controllers
 
         // GET/BaseURL/Members/Edit/{id}
         // Edit -   Displays edit form
+        [HttpGet]
+        public async Task<IActionResult> EditMember (int id, CancellationToken ct)
+        {
+            var member =  await _memberService.GetMemberToUpdateByIdAsync(id, ct);
+            if (member is null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction(nameof(Index));
+            }; 
+            return View(member);
+        }
+
 
         // POST/BaseURL/Members/EditMember {Member}
         // EditMember -  submitted form
+        [HttpPost]
+        public async Task<IActionResult> EditMember([FromRoute] int id, MemberToUpdateViewModel model, CancellationToken ct)
+        {
+            if (!ModelState.IsValid) return View(model);
 
+           var Result =  await _memberService.UpdateMemberDetailsAsync(id, model, ct);
+            if (Result)
+                TempData["SuccessMessage"] = "Member Updated  Successfully";
+           else
+                TempData["ErrorMessage"] = "Failed To  Update Member   ";
+
+            return RedirectToAction(nameof(Index));
+
+        }
 
 
 

@@ -18,8 +18,8 @@ namespace GymMangement.BLL.Services.Classes
         private readonly IGenericRepository<Plan> planRepository;
         private readonly IGenericRepository<HealthRecord> healthRecordRepository;
 
-        public MemberService(IGenericRepository<Member> memberRepository 
-            , IGenericRepository<MemberShip> memberShipRepository ,
+        public MemberService(IGenericRepository<Member> memberRepository
+            , IGenericRepository<MemberShip> memberShipRepository,
             IGenericRepository<Plan> planRepository,
             IGenericRepository<HealthRecord> healthRecordRepository)
         {
@@ -95,7 +95,7 @@ namespace GymMangement.BLL.Services.Classes
 
             var model = new MemberViewModel()
             {
-                Name =member.Name,
+                Name = member.Name,
                 Phone = member.Phone,
                 DateOfBirth = member.DateOfBirth.ToShortDateString(),
                 Gender = member.Gender.ToString(),
@@ -103,14 +103,14 @@ namespace GymMangement.BLL.Services.Classes
             };
 
 
-           
-            var ActiveMembership = await memberShipRepository.FirstOrDefaultAsync(x=>x.MemberId == MemberId && x.EndDate > DateTime.Now);
+
+            var ActiveMembership = await memberShipRepository.FirstOrDefaultAsync(x => x.MemberId == MemberId && x.EndDate > DateTime.Now);
 
             if (ActiveMembership is not null)
             {
 
                 var ActivePlan = await planRepository.GetByIdAsync(ActiveMembership.PlanId, ct);
-                model.PlanName= ActivePlan?.Name;
+                model.PlanName = ActivePlan?.Name;
 
                 model.MembershipStartDate = ActiveMembership.CreatedAt.ToString();
                 model.MembershipEndDate = ActiveMembership.EndDate.ToString();
@@ -141,6 +141,47 @@ namespace GymMangement.BLL.Services.Classes
                 Phone = m.Phone
             });
             return memberViewModel;
+
+
+        }
+
+        public async Task<MemberToUpdateViewModel?> GetMemberToUpdateByIdAsync(int MemberId, CancellationToken ct = default)
+        {
+            var member = await memberRepository.GetByIdAsync(MemberId, ct);
+            if (member == null) return null;
+            else
+                return new MemberToUpdateViewModel()
+                {
+                    Name = member.Name,
+                    Photo = member.Photo,
+                    Email = member.Email,
+                    Phone = member.Phone,
+                    BuildingNumber = member.Address.BuildingNumber,
+                    City = member.Address.City,
+                    Street = member.Address.street
+                };
+        }
+
+        public async Task<bool> UpdateMemberDetailsAsync(int Id, MemberToUpdateViewModel model, CancellationToken ct = default)
+        {
+            var member = await memberRepository.GetByIdAsync(Id, ct);
+            if (member == null) return false;
+            // Check Email And Phone If Exist ?
+            var EmailExists = await memberRepository.AnyAsync(x => x.Email == model.Email && x.Id != Id);
+            var PhoneExists = await memberRepository.AnyAsync(x => x.Phone == model.Phone && x.Id != Id);
+
+            if (EmailExists || PhoneExists) return false;
+            member.Email = model.Email;
+            member.Phone = model.Phone;
+            member.Address.City = model.City;
+            member.Address.BuildingNumber = model.BuildingNumber;
+            member.Address.street = model.Street;
+            member.UpdatedAt = DateTime.Now;
+
+            var Result = await memberRepository.UpdateAsync(member);
+            return Result > 0;
+
+
 
 
         }
